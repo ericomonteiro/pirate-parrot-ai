@@ -10,6 +10,7 @@ AI-powered desktop application that helps you solve coding challenges using Goog
 - **Fast Search**: Instant problem lookup from 30 pre-loaded problems
 - **Solution Caching**: Offline access to previously generated solutions
 - **Always on Top**: Window stays visible while you work
+- **Stealth Mode**: Hide window from screen capture/recording (Zoom, Meet, Teams) ✅
 
 ## 📋 Prerequisites
 
@@ -83,6 +84,7 @@ Output: `composeApp\build\compose\binaries\main\msi\`
 
 - [GEMINI_SETUP.md](./GEMINI_SETUP.md) - Complete Gemini setup guide
 - [SCREENSHOT_FEATURE.md](./SCREENSHOT_FEATURE.md) - Screenshot analysis feature
+- [STEALTH_MODE.md](./STEALTH_MODE.md) - Stealth mode setup and testing
 - [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) - Common issues and solutions
 - [CHANGELOG.md](./CHANGELOG.md) - Version history
 
@@ -136,6 +138,7 @@ copilot/
 - [x] Settings management
 - [x] Dark theme UI
 - [x] Always-on-top window
+- [x] Stealth mode (hide from screen capture)
 
 ### 📅 Planned
 - [ ] Global hotkeys (Cmd+Shift+S)

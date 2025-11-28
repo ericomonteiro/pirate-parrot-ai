@@ -47,6 +47,7 @@ kotlin {
             // Native
             implementation(libs.jna)
             implementation(libs.jna.platform)
+            implementation(libs.java.objc.bridge)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

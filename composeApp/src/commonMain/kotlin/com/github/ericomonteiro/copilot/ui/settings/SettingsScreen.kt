@@ -18,6 +18,7 @@ import org.koin.compose.koinInject
 fun SettingsScreen(
     onCloseClick: () -> Unit,
     onOpacityChanged: (Float) -> Unit,
+    onHideFromCaptureChanged: (Boolean) -> Unit = {},
     viewModel: SettingsViewModel = koinInject()
 ) {
     val state by viewModel.state.collectAsState()
@@ -25,6 +26,11 @@ fun SettingsScreen(
     // Update opacity in parent when it changes
     LaunchedEffect(state.opacity) {
         onOpacityChanged(state.opacity)
+    }
+    
+    // Update hide from capture in parent when it changes
+    LaunchedEffect(state.hideFromCapture) {
+        onHideFromCaptureChanged(state.hideFromCapture)
     }
     
     Column(

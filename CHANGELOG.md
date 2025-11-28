@@ -4,6 +4,37 @@ All notable changes to the Interview Assistant project.
 
 ---
 
+## [1.2.0] - 2025-11-28
+
+### Added
+- **Stealth Mode (macOS)**: Hide window from screen capture and recording ✅
+  - Native JNI implementation using Objective-C
+  - Works with Zoom, Google Meet, Microsoft Teams, and macOS screenshots
+  - Toggle in Settings → "Hide from Screen Capture"
+  - Universal binary (arm64 + x86_64)
+  - Runs in same process as JVM for reliable window access
+
+### New Components
+- `stealth_jni.m` - Native JNI implementation in Objective-C
+- `libstealth.dylib` - Compiled native library
+- `build_jni.sh` - Build script for native library
+- Native method `nativeSetHideFromCapture()` in WindowManager
+
+### Technical
+- JNI integration for native macOS APIs
+- NSWindow.setSharingType() for screen capture control
+- Automatic library extraction and loading at runtime
+- Thread-safe implementation using dispatch_async
+- Comprehensive error handling and logging
+
+### Documentation
+- Added `STEALTH_MODE.md` with complete implementation guide
+- Consolidated and removed redundant documentation files
+- Updated README with stealth mode status
+- All documentation in English
+
+---
+
 ## [1.1.0] - 2024-11-28
 
 ### Added
@@ -126,15 +157,15 @@ All notable changes to the Interview Assistant project.
 
 ## Roadmap
 
-### Version 1.1 (Planned)
+### Version 1.3 (Planned)
 - [ ] Global hotkeys (Ctrl/Cmd+B to toggle visibility)
-- [ ] Advanced screen capture hiding
+- [ ] Stealth mode for Windows (SetWindowDisplayAffinity)
 - [ ] Process hiding from task manager
 - [ ] More problems (100+)
 - [ ] Additional programming languages (C++, Go, Rust)
 - [ ] Custom problem addition
 
-### Version 1.2 (Planned)
+### Version 1.4 (Planned)
 - [ ] Audio/TTS explanations
 - [ ] Context detection (clipboard monitoring)
 - [ ] Auto-positioning over code editors
@@ -160,13 +191,12 @@ None yet (MVP release)
 
 ### Non-Critical
 - SLF4J warning on startup (cosmetic, no impact)
-- 3 deprecation warnings in Compose APIs (non-blocking)
-- Window decorations visible (stealth features not yet implemented)
+- Compose API deprecation warnings (non-blocking)
+- Window opacity control disabled (requires undecorated window)
 
-### Workarounds
-- **Hotkeys**: Use Alt+Tab or Cmd+Tab to switch windows
-- **Stealth**: Window is set to always-on-top
-- **Hiding**: Minimize window manually
+### Platform Limitations
+- **Stealth Mode**: macOS only (Windows support planned for v1.3)
+- **Global Hotkeys**: Not yet implemented (planned for v1.3)
 
 ---
 
@@ -209,6 +239,6 @@ See LICENSE file for details.
 
 ---
 
-**Current Version**: 1.0.1
+**Current Version**: 1.2.0
 **Status**: Stable
-**Last Updated**: November 28, 2024
+**Last Updated**: November 28, 2025

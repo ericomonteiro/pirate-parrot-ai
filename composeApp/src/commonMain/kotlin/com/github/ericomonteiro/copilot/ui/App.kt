@@ -17,7 +17,10 @@ enum class Screen {
 }
 
 @Composable
-fun App() {
+fun App(
+    onOpacityChanged: (Float) -> Unit = {},
+    onHideFromCaptureChanged: (Boolean) -> Unit = {}
+) {
     var currentScreen by remember { mutableStateOf(Screen.SEARCH) }
     var selectedProblemId by remember { mutableStateOf<Long?>(null) }
     var screenshotBase64 by remember { mutableStateOf<String?>(null) }
@@ -68,6 +71,10 @@ fun App() {
                     },
                     onOpacityChanged = { newOpacity ->
                         opacity = newOpacity
+                        onOpacityChanged(newOpacity)
+                    },
+                    onHideFromCaptureChanged = { hide ->
+                        onHideFromCaptureChanged(hide)
                     }
                 )
                 Screen.SCREENSHOT_ANALYSIS -> {
