@@ -1,9 +1,7 @@
 package com.github.ericomonteiro.copilot.ui.screenshot
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -13,10 +11,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.github.ericomonteiro.copilot.ai.SolutionResponse
+import com.github.ericomonteiro.copilot.ui.components.CodeDisplay
 import org.koin.compose.koinInject
 
 @Composable
@@ -168,7 +165,7 @@ fun ScreenshotAnalysisScreen(
                 }
             }
             state.solution != null -> {
-                SolutionContent(solution = state.solution!!)
+                SolutionContent(solution = state.solution!!, language = state.selectedLanguage)
             }
             else -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -180,7 +177,7 @@ fun ScreenshotAnalysisScreen(
 }
 
 @Composable
-fun SolutionContent(solution: SolutionResponse) {
+fun SolutionContent(solution: SolutionResponse, language: String = "Kotlin") {
     var selectedTab by remember { mutableStateOf(0) }
     
     Column(modifier = Modifier.fillMaxSize()) {
@@ -198,7 +195,7 @@ fun SolutionContent(solution: SolutionResponse) {
         }
         
         when (selectedTab) {
-            0 -> CodeTab(code = solution.code)
+            0 -> CodeTab(code = solution.code, language = language)
             1 -> ExplanationTab(
                 explanation = solution.explanation,
                 timeComplexity = solution.timeComplexity,
@@ -209,26 +206,12 @@ fun SolutionContent(solution: SolutionResponse) {
 }
 
 @Composable
-fun CodeTab(code: String) {
-    val scrollState = rememberScrollState()
-    
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF1E1E1E))
-            .padding(16.dp)
-    ) {
-        SelectionContainer {
-            Text(
-                text = code,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontFamily = FontFamily.Monospace,
-                    color = Color(0xFFD4D4D4)
-                ),
-                modifier = Modifier.verticalScroll(scrollState)
-            )
-        }
-    }
+fun CodeTab(code: String, language: String = "Kotlin") {
+    CodeDisplay(
+        code = code,
+        language = language,
+        showLineNumbers = true
+    )
 }
 
 @Composable

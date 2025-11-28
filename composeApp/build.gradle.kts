@@ -44,6 +44,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             
+            // Code Editor
+            implementation(libs.compose.code.editor)
+            
             // Native
             implementation(libs.jna)
             implementation(libs.jna.platform)
