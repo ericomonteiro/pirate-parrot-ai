@@ -33,6 +33,13 @@ When stealth mode is disabled:
 
 ### Enable/Disable Stealth Mode
 
+**Method 1: Keyboard Shortcut (Recommended)**
+1. Press **Cmd+B** (macOS) or **Ctrl+B** (Windows)
+2. Stealth mode toggles instantly
+3. See confirmation in console: `⌨️ Hotkey: Stealth mode ENABLED (Cmd+B)`
+4. Setting is saved automatically
+
+**Method 2: Settings UI**
 1. Open the application
 2. Click Settings (⚙️ icon)
 3. Toggle "Hide from Screen Capture"

@@ -98,21 +98,6 @@ actual class WindowManager {
     }
     
     
-    actual fun setOpacity(alpha: Float) {
-        val window = currentWindow ?: findActiveWindow() ?: return
-        SwingUtilities.invokeLater {
-            try {
-                // Note: Setting opacity on decorated windows requires undecorated=true in Compose
-                // For now, we'll skip opacity changes to avoid errors
-                // window.opacity = alpha.coerceIn(0f, 1f)
-                println("WindowManager: Opacity change requested but skipped (requires undecorated window)")
-            } catch (e: Exception) {
-                println("WindowManager: Failed to set opacity: ${e.message}")
-            }
-        }
-    }
-    
-    
     private fun setHideFromCaptureWindows(window: Window, hide: Boolean) {
         try {
             // Get the native window handle (HWND)

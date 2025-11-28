@@ -10,7 +10,8 @@ AI-powered desktop application that helps you solve coding challenges using Goog
 - **Fast Search**: Instant problem lookup from 30 pre-loaded problems
 - **Solution Caching**: Offline access to previously generated solutions
 - **Always on Top**: Window stays visible while you work
-- **Stealth Mode**: Hide window from screen capture/recording (Zoom, Meet, Teams) ✅
+- **Stealth Mode**: Hide window from screen capture/recording (Zoom, Meet, Teams) - Cmd+B to toggle ✅
+- **Native Window Controls**: Standard title bar with minimize, maximize, close buttons
 
 ## 📋 Prerequisites
 

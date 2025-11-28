@@ -11,10 +11,4 @@ expect class WindowManager {
      * On Windows: Uses SetWindowDisplayAffinity
      */
     fun setHideFromCapture(hide: Boolean)
-    
-    /**
-     * Sets window opacity/transparency.
-     * @param alpha 0.0 (transparent) to 1.0 (opaque)
-     */
-    fun setOpacity(alpha: Float)
 }

@@ -17,16 +17,10 @@ import org.koin.compose.koinInject
 @Composable
 fun SettingsScreen(
     onCloseClick: () -> Unit,
-    onOpacityChanged: (Float) -> Unit,
     onHideFromCaptureChanged: (Boolean) -> Unit = {},
     viewModel: SettingsViewModel = koinInject()
 ) {
     val state by viewModel.state.collectAsState()
-    
-    // Update opacity in parent when it changes
-    LaunchedEffect(state.opacity) {
-        onOpacityChanged(state.opacity)
-    }
     
     // Update hide from capture in parent when it changes
     LaunchedEffect(state.hideFromCapture) {
@@ -138,24 +132,6 @@ fun SettingsScreen(
                     )
                 }
             }
-        }
-        
-        Spacer(modifier = Modifier.height(24.dp))
-        
-        // Opacity
-        Text("Window Opacity", style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Slider(
-                value = state.opacity,
-                onValueChange = { viewModel.setOpacity(it) },
-                valueRange = 0.5f..1.0f,
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                "${(state.opacity * 100).toInt()}%",
-                modifier = Modifier.padding(start = 8.dp)
-            )
         }
         
         Spacer(modifier = Modifier.height(24.dp))

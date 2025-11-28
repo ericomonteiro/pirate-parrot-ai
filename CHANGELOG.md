@@ -11,8 +11,10 @@ All notable changes to the Interview Assistant project.
   - Native JNI implementation using Objective-C
   - Works with Zoom, Google Meet, Microsoft Teams, and macOS screenshots
   - Toggle in Settings → "Hide from Screen Capture"
+  - **Keyboard Shortcut**: Cmd+B (macOS) or Ctrl+B (Windows) to toggle instantly
   - Universal binary (arm64 + x86_64)
   - Runs in same process as JVM for reliable window access
+  - **Persistent Settings**: Stealth mode state loaded automatically on app startup
 
 ### New Components
 - `stealth_jni.m` - Native JNI implementation in Objective-C
@@ -26,6 +28,8 @@ All notable changes to the Interview Assistant project.
 - Automatic library extraction and loading at runtime
 - Thread-safe implementation using dispatch_async
 - Comprehensive error handling and logging
+- **Settings Persistence**: Initial stealth mode and opacity loaded from database on startup
+- **Retry Logic**: AWT window detection with automatic retry (up to 10 attempts)
 
 ### Documentation
 - Added `STEALTH_MODE.md` with complete implementation guide

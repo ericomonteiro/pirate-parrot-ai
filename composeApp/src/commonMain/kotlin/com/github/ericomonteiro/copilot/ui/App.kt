@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import com.github.ericomonteiro.copilot.screenshot.captureScreenshot
 import com.github.ericomonteiro.copilot.ui.search.SearchScreen
 import com.github.ericomonteiro.copilot.ui.solution.SolutionScreen
@@ -18,22 +17,18 @@ enum class Screen {
 
 @Composable
 fun App(
-    onOpacityChanged: (Float) -> Unit = {},
     onHideFromCaptureChanged: (Boolean) -> Unit = {}
 ) {
     var currentScreen by remember { mutableStateOf(Screen.SEARCH) }
     var selectedProblemId by remember { mutableStateOf<Long?>(null) }
     var screenshotBase64 by remember { mutableStateOf<String?>(null) }
-    var opacity by remember { mutableStateOf(0.95f) }
     val scope = rememberCoroutineScope()
     
     MaterialTheme(
         colorScheme = darkColorScheme()
     ) {
         Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .alpha(opacity),
+            modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
             when (currentScreen) {
@@ -68,10 +63,6 @@ fun App(
                 Screen.SETTINGS -> SettingsScreen(
                     onCloseClick = {
                         currentScreen = Screen.SEARCH
-                    },
-                    onOpacityChanged = { newOpacity ->
-                        opacity = newOpacity
-                        onOpacityChanged(newOpacity)
                     },
                     onHideFromCaptureChanged = { hide ->
                         onHideFromCaptureChanged(hide)

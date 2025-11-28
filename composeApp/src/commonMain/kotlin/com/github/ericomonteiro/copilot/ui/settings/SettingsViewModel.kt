@@ -22,14 +22,12 @@ class SettingsViewModel(
     private fun loadSettings() {
         viewModelScope.launch {
             val apiKey = repository.getSetting("api_key") ?: ""
-            val opacity = repository.getSetting("opacity")?.toFloatOrNull() ?: 0.95f
             val hideFromCapture = repository.getSetting("hide_from_capture")?.toBoolean() ?: true
             val selectedModel = repository.getSetting("selected_model") ?: "gemini-2.5-flash"
             
             _state.update {
                 it.copy(
                     apiKey = apiKey,
-                    opacity = opacity,
                     hideFromCapture = hideFromCapture,
                     selectedModel = selectedModel
                 )
@@ -44,12 +42,6 @@ class SettingsViewModel(
         }
     }
     
-    fun setOpacity(opacity: Float) {
-        _state.update { it.copy(opacity = opacity) }
-        viewModelScope.launch {
-            repository.setSetting("opacity", opacity.toString())
-        }
-    }
     
     fun setHideFromCapture(hide: Boolean) {
         _state.update { it.copy(hideFromCapture = hide) }
@@ -173,7 +165,6 @@ class SettingsViewModel(
 
 data class SettingsState(
     val apiKey: String = "",
-    val opacity: Float = 0.95f,
     val hideFromCapture: Boolean = true,
     val testResult: String? = null,
     val selectedModel: String = "gemini-2.5-flash",
