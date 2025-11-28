@@ -10,10 +10,21 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonObject
+import kotlinx.serialization.json.buildJsonArray
+import kotlinx.serialization.encodeToString
 
 interface AIService {
     suspend fun generateSolution(
         problemDescription: String,
+        language: String
+    ): Result<SolutionResponse>
+    
+    suspend fun analyzeCodingChallenge(
+        imageBase64: String,
         language: String
     ): Result<SolutionResponse>
 }
@@ -76,6 +87,13 @@ class OpenAIService(
         }
         
         parseResponse(response.choices.first().message.content)
+    }
+    
+    override suspend fun analyzeCodingChallenge(
+        imageBase64: String,
+        language: String
+    ): Result<SolutionResponse> = runCatching {
+        throw UnsupportedOperationException("OpenAI vision API requires GPT-4 Vision which is not in free tier. Please use Gemini for image analysis.")
     }
     
     private fun buildPrompt(problem: String, language: String): String = """
@@ -204,6 +222,70 @@ class GeminiService(
         val json = Json { ignoreUnknownKeys = true }
         return json.decodeFromString(jsonContent)
     }
+    
+    override suspend fun analyzeCodingChallenge(
+        imageBase64: String,
+        language: String
+    ): Result<SolutionResponse> = runCatching {
+        if (apiKey.isBlank()) {
+            throw IllegalStateException("Gemini API key is not configured. Please set it in Settings.")
+        }
+        
+        val prompt = buildImageAnalysisPrompt(language)
+        
+        val requestBody = buildJsonObject {
+            put("contents", buildJsonArray {
+                add(buildJsonObject {
+                    put("parts", buildJsonArray {
+                        add(buildJsonObject {
+                            put("text", prompt)
+                        })
+                        add(buildJsonObject {
+                            putJsonObject("inlineData") {
+                                put("mimeType", "image/png")
+                                put("data", imageBase64)
+                            }
+                        })
+                    })
+                })
+            })
+        }
+        
+        val httpResponse = httpClient.post("$baseUrl/models/$model:generateContent?key=$apiKey") {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(requestBody))
+        }
+        
+        if (httpResponse.status.value !in 200..299) {
+            val errorBody = httpResponse.body<String>()
+            throw Exception("Gemini API error (${httpResponse.status.value}): $errorBody")
+        }
+        
+        val response = httpResponse.body<GeminiResponse>()
+        
+        if (response.candidates.isEmpty()) {
+            throw Exception("Gemini returned no candidates in response")
+        }
+        
+        val content = response.candidates.first().content.parts.first().text
+        parseResponse(content)
+    }
+    
+    private fun buildImageAnalysisPrompt(language: String): String = """
+        Analyze this coding challenge screenshot and provide a complete solution in $language.
+        
+        Extract the problem description from the image and solve it.
+        
+        Provide your response in JSON format:
+        {
+          "code": "complete solution code",
+          "explanation": "brief explanation of the problem and approach",
+          "timeComplexity": "O(...)",
+          "spaceComplexity": "O(...)"
+        }
+        
+        Important: Return ONLY the JSON, no markdown code blocks or additional text.
+    """.trimIndent()
     
     // Helper function to list available models
     suspend fun listAvailableModels(): Result<String> = runCatching {

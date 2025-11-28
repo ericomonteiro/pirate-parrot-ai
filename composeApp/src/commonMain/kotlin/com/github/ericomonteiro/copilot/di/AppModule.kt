@@ -9,6 +9,7 @@ import com.github.ericomonteiro.copilot.db.Database
 import com.github.ericomonteiro.copilot.ui.search.SearchViewModel
 import com.github.ericomonteiro.copilot.ui.settings.SettingsViewModel
 import com.github.ericomonteiro.copilot.ui.solution.SolutionViewModel
+import com.github.ericomonteiro.copilot.ui.screenshot.ScreenshotAnalysisViewModel
 import kotlinx.coroutines.runBlocking
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -40,6 +41,9 @@ val appModule = module {
         SolutionViewModel(problemId, get(), get())
     }
     factory { SettingsViewModel(get()) }
+    factory { (screenshotBase64: String) ->
+        ScreenshotAnalysisViewModel(get(), screenshotBase64)
+    }
 }
 
 // Platform-specific database creation

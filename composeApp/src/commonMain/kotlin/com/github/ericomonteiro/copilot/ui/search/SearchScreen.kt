@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -21,6 +22,7 @@ import org.koin.compose.koinInject
 fun SearchScreen(
     onProblemSelected: (Long) -> Unit,
     onSettingsClick: () -> Unit,
+    onScreenshotClick: () -> Unit = {},
     viewModel: SearchViewModel = koinInject()
 ) {
     val state by viewModel.state.collectAsState()
@@ -40,8 +42,13 @@ fun SearchScreen(
                 "Interview Assistant",
                 style = MaterialTheme.typography.headlineSmall
             )
-            IconButton(onClick = onSettingsClick) {
-                Icon(Icons.Default.Settings, "Settings")
+            Row {
+                IconButton(onClick = onScreenshotClick) {
+                    Icon(Icons.Default.CameraAlt, "Capture Screenshot")
+                }
+                IconButton(onClick = onSettingsClick) {
+                    Icon(Icons.Default.Settings, "Settings")
+                }
             }
         }
         

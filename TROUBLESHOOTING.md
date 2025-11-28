@@ -2,6 +2,83 @@
 
 ## Common Errors and Solutions
 
+### Error: "Gemini API key is not configured"
+
+**Full Error**:
+```
+Error: Gemini API key is not configured. Please set it in Settings.
+```
+
+**Cause**: No API key configured or invalid key
+
+**Solution**:
+
+#### 1. Get Free Gemini API Key
+1. Visit https://makersuite.google.com/app/apikey
+2. Sign in with Google account
+3. Click "Create API Key"
+4. Copy the key (starts with `AIza...`)
+
+#### 2. Configure in App
+1. Open Interview Assistant
+2. Click Settings (⚙️)
+3. Paste your Gemini API key
+4. Click outside to save
+
+#### 3. Verify It Works
+1. Search for "Two Sum"
+2. Click on problem
+3. Solution should generate in 3-5 seconds
+
+---
+
+### Error: Screenshot Capture Failed
+
+**Symptoms**: Camera icon clicked but nothing happens or error shown
+
+**Possible Causes**:
+1. Missing screen recording permissions (macOS)
+2. Java AWT Robot not available
+3. Display not accessible
+
+**Solution**:
+
+**macOS**:
+1. Go to System Preferences → Security & Privacy
+2. Click Privacy tab
+3. Select "Screen Recording"
+4. Add/enable the Java application
+5. Restart the app
+
+**Windows**:
+- Usually works without special permissions
+- Check antivirus isn't blocking screen capture
+
+**Linux**:
+- Ensure X11 or Wayland display is accessible
+- Check display permissions
+
+---
+
+### Error: Screenshot Analysis Returns Error
+
+**Symptoms**: Screenshot captured but analysis fails
+
+**Possible Causes**:
+1. Image quality too low
+2. Text not readable in screenshot
+3. Network error
+4. Gemini API issue
+
+**Solution**:
+1. Try with a clearer screenshot
+2. Ensure coding challenge text is visible and readable
+3. Check internet connection
+4. Verify Gemini API key is valid
+5. Click "Retry" button
+
+---
+
 ### Error: "Field 'choices' is required but it was missing"
 
 **Full Error**:

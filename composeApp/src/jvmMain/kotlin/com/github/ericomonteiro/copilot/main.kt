@@ -1,6 +1,7 @@
 package com.github.ericomonteiro.copilot
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition

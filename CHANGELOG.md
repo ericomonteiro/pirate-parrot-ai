@@ -1,6 +1,35 @@
 # Changelog
 
-All notable changes to the Interview Assistant MVP project.
+All notable changes to the Interview Assistant project.
+
+---
+
+## [1.1.0] - 2024-11-28
+
+### Added
+- **Screenshot Analysis Feature**: Capture coding challenges from screen and get AI solutions
+  - Click camera icon to capture entire screen
+  - Automatic analysis with Gemini Vision API
+  - Support for 7 programming languages
+  - Real-time solution generation with explanation
+  - Complexity analysis (time/space)
+  
+### New Components
+- `ScreenshotService` - Platform-specific screen capture
+- `ScreenshotAnalysisScreen` - UI for displaying analysis results
+- `ScreenshotAnalysisViewModel` - State management for screenshot analysis
+- `analyzeCodingChallenge()` method in AIService
+
+### Technical
+- Implemented expect/actual pattern for multiplatform screenshot capture
+- Java AWT Robot for JVM screenshot capture
+- Base64 image encoding for API submission
+- Gemini Vision API integration with inline image data
+
+### Documentation
+- Added `SCREENSHOT_FEATURE.md` with complete feature documentation
+- Updated README with new features
+- All documentation now in English
 
 ---
 

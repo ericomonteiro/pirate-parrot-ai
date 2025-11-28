@@ -1,21 +1,22 @@
-# Interview Assistant MVP
+# Interview Assistant
 
-AI-powered interview assistant that provides real-time coding solutions during technical interviews while remaining undetectable by screen sharing software.
+AI-powered desktop application that helps you solve coding challenges using Google Gemini AI with vision capabilities.
 
 ## 🚀 Features
 
-- **Undetectable**: Hidden from screen capture (Zoom, Meet, Teams)
-- **AI-Powered**: GPT-4 generated solutions
-- **Multi-Language**: Kotlin, Java, Python, JavaScript
-- **Fast Search**: Instant problem lookup
-- **Solution Caching**: Offline access to generated solutions
-- **Stealth Mode**: Hidden from dock/taskbar
+- **Screenshot Analysis**: Capture coding challenges from your screen and get instant solutions
+- **AI-Powered**: Google Gemini (FREE) with vision support
+- **Multi-Language**: Kotlin, Java, Python, JavaScript, C++, Go, Rust
+- **Fast Search**: Instant problem lookup from 30 pre-loaded problems
+- **Solution Caching**: Offline access to previously generated solutions
+- **Always on Top**: Window stays visible while you work
 
 ## 📋 Prerequisites
 
 - JDK 17 or higher
-- OpenAI API Key ([Get one here](https://platform.openai.com/api-keys))
+- Google Gemini API Key ([Get one FREE here](https://makersuite.google.com/app/apikey))
 - macOS 11+ or Windows 10+
+- No credit card required!
 
 ## 🛠️ Development Setup
 
@@ -26,17 +27,31 @@ git clone <repository-url>
 cd copilot
 ```
 
-### 2. Set Environment Variable
+### 2. Get Gemini API Key
 
+1. Visit https://makersuite.google.com/app/apikey
+2. Sign in with your Google account
+3. Click "Create API Key"
+4. Copy the key (starts with `AIza...`)
+
+### 3. Configure API Key
+
+**Option 1 - In the app**:
+1. Run the app
+2. Click Settings (⚙️)
+3. Paste your API key
+4. Done!
+
+**Option 2 - Environment variable**:
 ```bash
 # macOS/Linux
-export OPENAI_API_KEY="sk-your-api-key-here"
+export OPENAI_API_KEY="your-gemini-key-here"
 
 # Windows (PowerShell)
-$env:OPENAI_API_KEY="sk-your-api-key-here"
+$env:OPENAI_API_KEY="your-gemini-key-here"
 ```
 
-### 3. Build and Run
+### 4. Build and Run
 
 ```bash
 # macOS/Linux
@@ -64,14 +79,12 @@ Output: `composeApp/build/compose/binaries/main/dmg/`
 
 Output: `composeApp\build\compose\binaries\main\msi\`
 
-## 📖 User Documentation
+## 📖 Documentation
 
-See [HOWTO.md](./HOWTO.md) for complete user guide including:
-- Installation instructions
-- Setup guide
-- Usage examples
-- Troubleshooting
-- FAQ
+- [GEMINI_SETUP.md](./GEMINI_SETUP.md) - Complete Gemini setup guide
+- [SCREENSHOT_FEATURE.md](./SCREENSHOT_FEATURE.md) - Screenshot analysis feature
+- [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) - Common issues and solutions
+- [CHANGELOG.md](./CHANGELOG.md) - Version history
 
 ## 🏗️ Project Structure
 
@@ -81,16 +94,19 @@ copilot/
 │   ├── src/
 │   │   ├── commonMain/          # Shared code
 │   │   │   ├── kotlin/
-│   │   │   │   ├── ai/          # OpenAI integration
+│   │   │   │   ├── ai/          # Gemini AI integration
 │   │   │   │   ├── data/        # Repository & models
 │   │   │   │   ├── ui/          # Compose UI
+│   │   │   │   ├── screenshot/  # Screenshot capture
 │   │   │   │   └── di/          # Dependency injection
 │   │   │   └── sqldelight/      # Database schema
 │   │   └── jvmMain/             # Desktop-specific
+│   │       └── kotlin/
+│   │           └── screenshot/  # Platform screenshot impl
 │   └── build.gradle.kts
-├── specs/                        # Implementation plans
-├── HOWTO.md                      # User guide
-└── README.md                     # This file
+├── GEMINI_SETUP.md              # Gemini setup guide
+├── SCREENSHOT_FEATURE.md        # Screenshot feature docs
+└── README.md                    # This file
 ```
 
 ## 🔧 Technology Stack
@@ -100,7 +116,8 @@ copilot/
 - **Database**: SQLDelight 2.0.1
 - **HTTP**: Ktor 2.3.7
 - **DI**: Koin 3.5.3
-- **AI**: OpenAI GPT-4 API
+- **AI**: Google Gemini API (gemini-2.5-flash)
+- **Screenshot**: Java AWT Robot
 
 ## 🧪 Testing
 
@@ -108,25 +125,24 @@ copilot/
 ./gradlew test
 ```
 
-## 📝 Implementation Status
+## 📝 Features
 
-### ✅ Completed (MVP)
-- [x] Project setup and dependencies
-- [x] Database schema (SQLDelight)
-- [x] AI service (OpenAI integration)
-- [x] Repository layer
-- [x] User documentation
-
-### 🚧 In Progress
-- [ ] UI implementation (Compose)
-- [ ] Platform-specific features (window management, hotkeys)
-- [ ] Dependency injection setup
-- [ ] Main entry point
+### ✅ Completed
+- [x] Problem search and browsing (30 pre-loaded problems)
+- [x] AI solution generation (Gemini)
+- [x] Screenshot capture and analysis
+- [x] Multi-language support (7 languages)
+- [x] Solution caching
+- [x] Settings management
+- [x] Dark theme UI
+- [x] Always-on-top window
 
 ### 📅 Planned
-- [ ] Testing suite
-- [ ] Performance optimization
-- [ ] Packaging and distribution
+- [ ] Global hotkeys (Cmd+Shift+S)
+- [ ] Region selection for screenshots
+- [ ] Screenshot preview before analysis
+- [ ] More programming languages
+- [ ] Custom problem addition
 
 ## 🤝 Contributing
 
@@ -134,19 +150,22 @@ This is an MVP project. Contributions are welcome after the initial release.
 
 ## ⚠️ Disclaimer
 
-This tool is for educational purposes only. Using it during actual interviews may violate platform terms of service. Use responsibly.
+This tool is for educational and practice purposes. Using AI assistance during actual interviews may violate interview guidelines. Use responsibly and ethically.
 
 ## 📄 License
 
 See LICENSE file for details.
 
-## 🔗 Links
+## 🎯 Quick Start
 
-- [Implementation Plan](./specs/implementation-plan.md)
-- [MVP Plan](./specs/mvp-implementation-plan.md)
-- [User Guide](./HOWTO.md)
+1. Get free Gemini API key: https://makersuite.google.com/app/apikey
+2. Run: `./gradlew :composeApp:run`
+3. Click Settings and paste your API key
+4. Click the camera icon to capture a coding challenge
+5. Get instant solution and explanation!
 
 ---
 
-**Status**: MVP Development
-**Version**: 1.0.0-SNAPSHOT
+**Status**: Active Development
+**Version**: 1.1.0
+**License**: MIT
