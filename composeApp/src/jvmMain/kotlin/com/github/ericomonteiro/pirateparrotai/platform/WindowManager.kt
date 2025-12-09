@@ -3,6 +3,8 @@ package com.github.ericomonteiro.pirateparrotai.platform
 import com.github.ericomonteiro.pirateparrotai.util.AppLogger
 import com.sun.jna.Native
 import com.sun.jna.Pointer
+import com.sun.jna.platform.win32.User32
+import com.sun.jna.platform.win32.WinDef
 import java.awt.Window
 
 /**
@@ -96,18 +98,10 @@ actual class WindowManager {
     
     private fun setHideFromCaptureWindows(window: Window, hide: Boolean) {
         try {
-            // Get the native window handle (HWND)
-            val windowClass = window.javaClass
-            val peerField = windowClass.superclass.getDeclaredField("peer")
-            peerField.isAccessible = true
-            val peer = peerField.get(window)
+            // Get the native window handle (HWND) using JNA's User32
+            val hwnd = getWindowHandle(window)
             
-            val platformWindowClass = peer.javaClass
-            val getHWndMethod = platformWindowClass.getDeclaredMethod("getHWnd")
-            getHWndMethod.isAccessible = true
-            val hwnd = getHWndMethod.invoke(peer) as Long
-            
-            if (hwnd == 0L) {
+            if (hwnd == null || Pointer.nativeValue(hwnd.pointer) == 0L) {
                 AppLogger.error("WindowManager: Failed to get HWND")
                 return
             }
@@ -115,15 +109,55 @@ actual class WindowManager {
             // Use JNA to call SetWindowDisplayAffinity
             val user32 = User32Extended.INSTANCE
             val affinity = if (hide) 0x00000011 else 0x00000000 // WDA_EXCLUDEFROMCAPTURE or WDA_NONE
-            val success = user32.SetWindowDisplayAffinity(Pointer(hwnd), affinity)
+            val success = user32.SetWindowDisplayAffinity(hwnd.pointer, affinity)
             
             if (success) {
                 AppLogger.debug("WindowManager: Windows stealth mode ${if (hide) "enabled" else "disabled"}")
             } else {
-                AppLogger.error("WindowManager: Failed to set Windows stealth mode")
+                val error = Native.getLastError()
+                AppLogger.error("WindowManager: Failed to set Windows stealth mode, error code: $error")
             }
         } catch (e: Exception) {
             AppLogger.error("WindowManager: Failed to set Windows stealth mode: ${e.message}", e)
+            e.printStackTrace()
+        }
+    }
+    
+    private fun getWindowHandle(window: Window): WinDef.HWND? {
+        try {
+            // Try to find the window by title using JNA
+            val title = when (window) {
+                is java.awt.Frame -> window.title
+                is java.awt.Dialog -> window.title
+                else -> null
+            }
+            
+            if (title != null && title.isNotEmpty()) {
+                val hwnd = User32.INSTANCE.FindWindow(null, title)
+                if (hwnd != null) {
+                    return hwnd
+                }
+            }
+            
+            // Fallback: enumerate windows to find our window
+            var foundHwnd: WinDef.HWND? = null
+            User32.INSTANCE.EnumWindows({ hwnd, _ ->
+                val windowText = CharArray(512)
+                User32.INSTANCE.GetWindowText(hwnd, windowText, 512)
+                val windowTitle = String(windowText).trim { it == '\u0000' }
+                
+                if (title != null && windowTitle == title) {
+                    foundHwnd = hwnd
+                    false // Stop enumeration
+                } else {
+                    true // Continue enumeration
+                }
+            }, null)
+            
+            return foundHwnd
+        } catch (e: Exception) {
+            AppLogger.error("WindowManager: Failed to get window handle: ${e.message}", e)
+            return null
         }
     }
     
