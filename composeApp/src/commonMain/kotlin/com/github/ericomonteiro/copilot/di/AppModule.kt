@@ -43,9 +43,9 @@ val appModule = module {
 // Platform-specific database creation
 expect fun createDatabase(): Database
 
-// Get API key from settings or environment
+// Get Gemini API key from settings or environment
 suspend fun getApiKey(repository: SettingsRepository): String {
     return repository.getSetting("api_key") 
-        ?: System.getenv("OPENAI_API_KEY") 
+        ?: System.getenv("GEMINI_API_KEY") 
         ?: ""
 }
