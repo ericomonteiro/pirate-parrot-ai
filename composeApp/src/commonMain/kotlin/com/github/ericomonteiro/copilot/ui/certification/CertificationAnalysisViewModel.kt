@@ -1,9 +1,10 @@
-package com.github.ericomonteiro.copilot.ui.screenshot
+package com.github.ericomonteiro.copilot.ui.certification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ericomonteiro.copilot.ai.AIService
-import com.github.ericomonteiro.copilot.ai.SolutionResponse
+import com.github.ericomonteiro.copilot.ai.CertificationResponse
+import com.github.ericomonteiro.copilot.ai.CertificationType
 import com.github.ericomonteiro.copilot.data.repository.ScreenshotHistoryRepository
 import com.github.ericomonteiro.copilot.data.repository.ScreenshotType
 import com.github.ericomonteiro.copilot.data.repository.SettingsRepository
@@ -15,44 +16,55 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-data class ScreenshotAnalysisState(
+data class CertificationAnalysisState(
     val isLoading: Boolean = false,
-    val solution: SolutionResponse? = null,
+    val response: CertificationResponse? = null,
     val error: String? = null,
-    val selectedLanguage: String = "Kotlin",
+    val selectedCertification: CertificationType = CertificationType.AWS_SOLUTIONS_ARCHITECT_ASSOCIATE,
     val screenshotBase64: String? = null,
     val isCapturing: Boolean = false
 )
 
-class ScreenshotAnalysisViewModel(
+class CertificationAnalysisViewModel(
     private val aiService: AIService,
     private val settingsRepository: SettingsRepository,
     private val historyRepository: ScreenshotHistoryRepository
 ) : ViewModel() {
     
     private val json = Json { prettyPrint = true }
-    
-    private val _state = MutableStateFlow(ScreenshotAnalysisState())
-    val state: StateFlow<ScreenshotAnalysisState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(CertificationAnalysisState())
+    val state: StateFlow<CertificationAnalysisState> = _state.asStateFlow()
     
     init {
-        loadDefaultLanguage()
+        loadDefaultCertification()
     }
     
-    private fun loadDefaultLanguage() {
+    private fun loadDefaultCertification() {
         viewModelScope.launch {
-            val defaultLanguage = settingsRepository.getSetting("default_language") ?: "Kotlin"
-            _state.value = _state.value.copy(selectedLanguage = defaultLanguage)
+            val defaultCert = settingsRepository.getSetting("default_certification")
+            if (defaultCert != null) {
+                try {
+                    val certType = CertificationType.valueOf(defaultCert)
+                    _state.value = _state.value.copy(selectedCertification = certType)
+                } catch (e: Exception) {
+                    // Use default if invalid
+                }
+            }
         }
     }
     
-    fun selectLanguage(language: String) {
-        _state.value = _state.value.copy(selectedLanguage = language)
-        analyzeCodingChallenge()
+    fun selectCertification(certification: CertificationType) {
+        _state.value = _state.value.copy(selectedCertification = certification)
+        viewModelScope.launch {
+            settingsRepository.setSetting("default_certification", certification.name)
+        }
+        if (_state.value.screenshotBase64 != null) {
+            analyzeCertificationQuestion()
+        }
     }
     
     fun retry() {
-        analyzeCodingChallenge()
+        analyzeCertificationQuestion()
     }
     
     fun captureAndAnalyze() {
@@ -65,7 +77,7 @@ class ScreenshotAnalysisViewModel(
                         screenshotBase64 = base64,
                         isCapturing = false
                     )
-                    analyzeCodingChallenge()
+                    analyzeCertificationQuestion()
                 },
                 onFailure = { error ->
                     _state.value = _state.value.copy(
@@ -77,7 +89,7 @@ class ScreenshotAnalysisViewModel(
         }
     }
     
-    private fun analyzeCodingChallenge() {
+    private fun analyzeCertificationQuestion() {
         val screenshot = _state.value.screenshotBase64
         if (screenshot == null) {
             _state.value = _state.value.copy(
@@ -89,20 +101,20 @@ class ScreenshotAnalysisViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
             
-            val result = aiService.analyzeCodingChallenge(
+            val result = aiService.analyzeCertificationQuestion(
                 imageBase64 = screenshot,
-                language = _state.value.selectedLanguage
+                certificationType = _state.value.selectedCertification
             )
             
             result.fold(
-                onSuccess = { solution ->
+                onSuccess = { response ->
                     _state.value = _state.value.copy(
                         isLoading = false,
-                        solution = solution,
+                        response = response,
                         error = null
                     )
                     // Save to history
-                    saveToHistory(screenshot, solution, null)
+                    saveToHistory(screenshot, response, null)
                 },
                 onFailure = { exception ->
                     val errorMsg = exception.message ?: "Unknown error occurred"
@@ -117,19 +129,37 @@ class ScreenshotAnalysisViewModel(
         }
     }
     
-    private fun saveToHistory(screenshot: String, solution: SolutionResponse?, error: String?) {
+    private fun saveToHistory(screenshot: String, response: CertificationResponse?, error: String?) {
         viewModelScope.launch {
             try {
+                val resultJson = response?.let { 
+                    try {
+                        json.encodeToString(it)
+                    } catch (e: Exception) {
+                        println("Failed to serialize response: ${e.message}")
+                        // Fallback: create a simple JSON representation
+                        """{"answers_count": ${it.answers.size}, "examTips": "${it.examTips.take(100)}..."}"""
+                    }
+                }
+                println("Saving certification screenshot to history. Has response: ${response != null}, Has error: ${error != null}")
                 historyRepository.saveScreenshot(
-                    type = ScreenshotType.CODE_CHALLENGE,
+                    type = ScreenshotType.CERTIFICATION,
                     screenshotBase64 = screenshot,
-                    analysisResult = solution?.let { json.encodeToString(it) },
+                    analysisResult = resultJson,
                     error = error,
-                    metadata = """{"language": "${_state.value.selectedLanguage}"}"""
+                    metadata = """{"certification": "${_state.value.selectedCertification.name}"}"""
                 )
+                println("Screenshot saved to history successfully")
             } catch (e: Exception) {
                 println("Failed to save screenshot to history: ${e.message}")
+                e.printStackTrace()
             }
         }
+    }
+    
+    fun clearState() {
+        _state.value = CertificationAnalysisState(
+            selectedCertification = _state.value.selectedCertification
+        )
     }
 }

@@ -4,7 +4,18 @@ CREATE TABLE AppSettings (
     value TEXT NOT NULL
 );
 
--- Queries
+-- Screenshot history table for troubleshooting
+CREATE TABLE ScreenshotHistory (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    screenshotBase64 TEXT NOT NULL,
+    analysisResult TEXT,
+    error TEXT,
+    metadata TEXT
+);
+
+-- Settings Queries
 getSetting:
 SELECT value FROM AppSettings WHERE key = ?;
 
@@ -13,3 +24,26 @@ INSERT OR REPLACE INTO AppSettings(key, value) VALUES (?, ?);
 
 deleteSetting:
 DELETE FROM AppSettings WHERE key = ?;
+
+-- Screenshot History Queries
+insertScreenshot:
+INSERT INTO ScreenshotHistory(timestamp, type, screenshotBase64, analysisResult, error, metadata)
+VALUES (?, ?, ?, ?, ?, ?);
+
+getAllScreenshots:
+SELECT * FROM ScreenshotHistory ORDER BY timestamp DESC;
+
+getRecentScreenshots:
+SELECT * FROM ScreenshotHistory ORDER BY timestamp DESC LIMIT ?;
+
+getScreenshotById:
+SELECT * FROM ScreenshotHistory WHERE id = ?;
+
+deleteScreenshot:
+DELETE FROM ScreenshotHistory WHERE id = ?;
+
+deleteOldScreenshots:
+DELETE FROM ScreenshotHistory WHERE timestamp < ?;
+
+clearAllScreenshots:
+DELETE FROM ScreenshotHistory;

@@ -6,6 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import org.koin.compose.koinInject
 fun SettingsScreen(
     onCloseClick: () -> Unit,
     onHideFromCaptureChanged: (Boolean) -> Unit = {},
+    onHistoryClick: () -> Unit = {},
     viewModel: SettingsViewModel = koinInject()
 ) {
     val state by viewModel.state.collectAsState()
@@ -199,6 +201,26 @@ fun SettingsScreen(
                 onCheckedChange = { viewModel.setHideFromCapture(it) }
             )
         }
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        // Troubleshooting
+        Text("Troubleshooting", style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedButton(
+            onClick = onHistoryClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Default.History, contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Screenshot History")
+        }
+        Text(
+            "View captured screenshots and analysis results for debugging",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp)
+        )
         
         Spacer(modifier = Modifier.height(24.dp))
         

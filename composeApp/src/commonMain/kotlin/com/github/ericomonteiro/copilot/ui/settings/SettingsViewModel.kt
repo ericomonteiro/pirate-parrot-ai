@@ -78,7 +78,7 @@ class SettingsViewModel(
             
             try {
                 val httpClient = HttpClientFactory.create()
-                val geminiService = GeminiService(apiKey, httpClient)
+                val geminiService = GeminiService(apiKey, httpClient, repository)
                 
                 geminiService.listAvailableModels()
                     .onSuccess { modelsJson ->
@@ -107,7 +107,7 @@ class SettingsViewModel(
             
             try {
                 val httpClient = HttpClientFactory.create()
-                val geminiService = GeminiService(apiKey, httpClient)
+                val geminiService = GeminiService(apiKey, httpClient, repository)
                 
                 geminiService.listAvailableModels()
                     .onSuccess { models ->

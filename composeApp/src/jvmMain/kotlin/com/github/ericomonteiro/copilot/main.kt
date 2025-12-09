@@ -10,6 +10,7 @@ import com.github.ericomonteiro.copilot.data.repository.SettingsRepository
 import com.github.ericomonteiro.copilot.di.appModule
 import com.github.ericomonteiro.copilot.hotkey.GlobalHotkeyManager
 import com.github.ericomonteiro.copilot.platform.WindowManager
+import com.github.ericomonteiro.copilot.screenshot.ScreenshotCaptureConfig
 import com.github.ericomonteiro.copilot.ui.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,9 @@ fun main() = application {
     
     // Create WindowManager for native window operations
     val windowManager = WindowManager()
+    
+    // Configure screenshot capture to use WindowManager
+    ScreenshotCaptureConfig.windowManager = windowManager
     
     // Global coroutine scope
     val globalScope = remember { CoroutineScope(Dispatchers.Default) }
@@ -45,6 +49,7 @@ fun main() = application {
             onStealthHotkey = {
                 stealthModeEnabled = !stealthModeEnabled
                 windowManager.setHideFromCapture(stealthModeEnabled)
+                ScreenshotCaptureConfig.wasStealthEnabled = stealthModeEnabled
                 println("⌨️ Stealth mode ${if (stealthModeEnabled) "ENABLED" else "DISABLED"}")
                 // Save to database
                 val repository = get<SettingsRepository>(SettingsRepository::class.java)
@@ -106,6 +111,7 @@ fun main() = application {
                 // Load stealth mode setting (default: true/enabled)
                 val hideFromCapture = repository.getSetting("hide_from_capture")?.toBoolean() ?: true
                 stealthModeEnabled = hideFromCapture // Update state
+                ScreenshotCaptureConfig.wasStealthEnabled = hideFromCapture
                 windowManager.setHideFromCapture(hideFromCapture)
                 println("WindowManager: Initial stealth mode loaded: ${if (hideFromCapture) "ENABLED" else "DISABLED"}")
             } else {
@@ -116,6 +122,8 @@ fun main() = application {
         App(
             onHideFromCaptureChanged = { hide ->
                 windowManager.setHideFromCapture(hide)
+                ScreenshotCaptureConfig.wasStealthEnabled = hide
+                stealthModeEnabled = hide
                 println("Stealth mode ${if (hide) "enabled" else "disabled"}")
             },
             screenshotTrigger = screenshotTrigger

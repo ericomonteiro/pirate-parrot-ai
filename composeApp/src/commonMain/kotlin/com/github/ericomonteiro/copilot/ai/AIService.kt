@@ -1,5 +1,6 @@
 package com.github.ericomonteiro.copilot.ai
 
+import com.github.ericomonteiro.copilot.data.repository.SettingsRepository
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -27,7 +28,37 @@ interface AIService {
         imageBase64: String,
         language: String
     ): Result<SolutionResponse>
+    
+    suspend fun analyzeCertificationQuestion(
+        imageBase64: String,
+        certificationType: CertificationType
+    ): Result<CertificationResponse>
 }
+
+enum class CertificationType(val displayName: String, val description: String) {
+    AWS_CLOUD_PRACTITIONER("AWS Cloud Practitioner", "Foundational AWS certification"),
+    AWS_SOLUTIONS_ARCHITECT_ASSOCIATE("AWS Solutions Architect Associate", "Associate-level architecture certification"),
+    AWS_DEVELOPER_ASSOCIATE("AWS Developer Associate", "Associate-level developer certification"),
+    AWS_SYSOPS_ADMINISTRATOR("AWS SysOps Administrator", "Associate-level operations certification"),
+    AWS_SOLUTIONS_ARCHITECT_PROFESSIONAL("AWS Solutions Architect Professional", "Professional-level architecture certification"),
+    AWS_DEVOPS_ENGINEER_PROFESSIONAL("AWS DevOps Engineer Professional", "Professional-level DevOps certification")
+}
+
+@Serializable
+data class CertificationQuestionAnswer(
+    val questionNumber: Int,
+    val questionSummary: String,
+    val correctAnswer: String,
+    val explanation: String,
+    val incorrectAnswersExplanation: String,
+    val relatedServices: List<String>
+)
+
+@Serializable
+data class CertificationResponse(
+    val answers: List<CertificationQuestionAnswer>,
+    val examTips: String
+)
 
 @Serializable
 data class SolutionResponse(
@@ -96,6 +127,13 @@ class OpenAIService(
         throw UnsupportedOperationException("OpenAI vision API requires GPT-4 Vision which is not in free tier. Please use Gemini for image analysis.")
     }
     
+    override suspend fun analyzeCertificationQuestion(
+        imageBase64: String,
+        certificationType: CertificationType
+    ): Result<CertificationResponse> = runCatching {
+        throw UnsupportedOperationException("OpenAI vision API requires GPT-4 Vision which is not in free tier. Please use Gemini for certification analysis.")
+    }
+    
     private fun buildPrompt(problem: String, language: String): String = """
         Solve this coding problem in $language:
         
@@ -153,10 +191,15 @@ data class Choice(val message: Message)
 class GeminiService(
     private val apiKey: String,
     private val httpClient: HttpClient,
-    private val model: String = "gemini-2.5-flash" // Default model
+    private val settingsRepository: SettingsRepository,
+    private val defaultModel: String = "gemini-2.5-flash"
 ) : AIService {
     
     private val baseUrl = "https://generativelanguage.googleapis.com/v1beta"
+    
+    private suspend fun getModel(): String {
+        return settingsRepository.getSetting("selected_model") ?: defaultModel
+    }
     
     override suspend fun generateSolution(
         problemDescription: String,
@@ -167,6 +210,7 @@ class GeminiService(
         }
         
         val prompt = buildPrompt(problemDescription, language)
+        val model = getModel()
         
         val httpResponse = httpClient.post("$baseUrl/models/$model:generateContent?key=$apiKey") {
             contentType(ContentType.Application.Json)
@@ -232,6 +276,7 @@ class GeminiService(
         }
         
         val prompt = buildImageAnalysisPrompt(language)
+        val model = getModel()
         
         val requestBody = buildJsonObject {
             put("contents", buildJsonArray {
@@ -286,6 +331,105 @@ class GeminiService(
         
         Important: Return ONLY the JSON, no markdown code blocks or additional text.
     """.trimIndent()
+    
+    override suspend fun analyzeCertificationQuestion(
+        imageBase64: String,
+        certificationType: CertificationType
+    ): Result<CertificationResponse> = runCatching {
+        if (apiKey.isBlank()) {
+            throw IllegalStateException("Gemini API key is not configured. Please set it in Settings.")
+        }
+        
+        val prompt = buildCertificationPrompt(certificationType)
+        val model = getModel()
+        
+        val requestBody = buildJsonObject {
+            put("contents", buildJsonArray {
+                add(buildJsonObject {
+                    put("parts", buildJsonArray {
+                        add(buildJsonObject {
+                            put("text", prompt)
+                        })
+                        add(buildJsonObject {
+                            putJsonObject("inlineData") {
+                                put("mimeType", "image/png")
+                                put("data", imageBase64)
+                            }
+                        })
+                    })
+                })
+            })
+        }
+        
+        val httpResponse = httpClient.post("$baseUrl/models/$model:generateContent?key=$apiKey") {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(requestBody))
+        }
+        
+        if (httpResponse.status.value !in 200..299) {
+            val errorBody = httpResponse.body<String>()
+            throw Exception("Gemini API error (${httpResponse.status.value}): $errorBody")
+        }
+        
+        val response = httpResponse.body<GeminiResponse>()
+        
+        if (response.candidates.isEmpty()) {
+            throw Exception("Gemini returned no candidates in response")
+        }
+        
+        val content = response.candidates.first().content.parts.first().text
+        parseCertificationResponse(content)
+    }
+    
+    private fun buildCertificationPrompt(certificationType: CertificationType): String = """
+        You are an expert AWS certification instructor helping a student prepare for the ${certificationType.displayName} exam.
+        
+        Analyze this certification exam screenshot and provide detailed answers for ALL questions visible in the image.
+        
+        CRITICAL INSTRUCTIONS:
+        1. DETECT the language of the questions (English, Portuguese, Spanish, etc.) and RESPOND IN THE SAME LANGUAGE
+        2. Answer ALL questions visible in the screenshot - there may be one or multiple questions
+        3. For EACH question:
+           - Identify the correct answer(s)
+           - Explain why the correct answer is right
+           - Explain why each incorrect answer is wrong
+           - List related AWS services
+        4. Provide general exam tips at the end
+        
+        Provide your response in JSON format:
+        {
+          "answers": [
+            {
+              "questionNumber": 1,
+              "questionSummary": "Brief summary of what the question asks",
+              "correctAnswer": "The letter(s) and full text of the correct answer(s), e.g., 'B. Amazon S3'",
+              "explanation": "Detailed explanation of why this is the correct answer",
+              "incorrectAnswersExplanation": "Explanation of why each incorrect option is wrong",
+              "relatedServices": ["List", "of", "AWS", "services", "mentioned"]
+            }
+          ],
+          "examTips": "General tips for answering similar questions on the exam"
+        }
+        
+        If there are multiple questions, add more objects to the "answers" array with incrementing questionNumber.
+        
+        Important: 
+        - Return ONLY the JSON, no markdown code blocks or additional text.
+        - RESPOND IN THE SAME LANGUAGE AS THE QUESTIONS IN THE IMAGE.
+    """.trimIndent()
+    
+    private fun parseCertificationResponse(content: String): CertificationResponse {
+        val jsonContent = if (content.contains("```json")) {
+            content.substringAfter("```json").substringBefore("```").trim()
+        } else if (content.contains("```")) {
+            content.substringAfter("```").substringBefore("```").trim()
+        } else {
+            content.trim()
+        }
+        
+        val json = Json { ignoreUnknownKeys = true }
+        return json.decodeFromString(jsonContent)
+    }
     
     // Helper function to list available models
     suspend fun listAvailableModels(): Result<String> = runCatching {

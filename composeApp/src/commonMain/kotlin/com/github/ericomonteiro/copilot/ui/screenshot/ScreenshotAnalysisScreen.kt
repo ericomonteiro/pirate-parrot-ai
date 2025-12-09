@@ -6,6 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,6 +22,7 @@ import org.koin.compose.koinInject
 fun ScreenshotAnalysisScreen(
     autoCapture: Boolean = false,
     onSettingsClick: () -> Unit = {},
+    onCertificationClick: () -> Unit = {},
     onAutoCaptureConsumed: () -> Unit = {}
 ) {
     val viewModel: ScreenshotAnalysisViewModel = koinInject()
@@ -80,6 +82,11 @@ fun ScreenshotAnalysisScreen(
                         )
                     }
                 }
+            }
+            
+            // Certification button
+            IconButton(onClick = onCertificationClick) {
+                Icon(Icons.Default.School, "AWS Certification")
             }
             
             // Settings button
