@@ -2,6 +2,8 @@
 
 Prepare for AWS certification exams with AI-powered question analysis.
 
+![Certification Mode](../assets/certification.png)
+
 ## Overview
 
 Certification Mode helps you study for AWS certifications by analyzing exam questions and providing detailed explanations for correct and incorrect answers.

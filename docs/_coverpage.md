@@ -14,5 +14,5 @@
 <span class="badge badge-secondary">Compose Multiplatform</span>
 <span class="badge badge-tertiary">Gemini AI</span>
 
-[GitHub](https://github.com/ericomonteiro/copilot)
+[GitHub](https://github.com/ericomonteiro/pirate-parrot-ai)
 [Get Started](#welcome)

@@ -2,6 +2,8 @@
 
 Configure Pirate-Parrot to work with your preferences.
 
+![Settings Screen](../assets/settings.png)
+
 ## Required: Gemini API Key
 
 The app uses Google's Gemini AI for analysis. You need a free API key.

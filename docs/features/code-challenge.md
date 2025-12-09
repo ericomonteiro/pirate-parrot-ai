@@ -2,6 +2,8 @@
 
 Solve coding problems with AI-powered analysis and complete solutions.
 
+![Code Challenge Mode](../assets/code-challenge.png)
+
 ## Overview
 
 Code Challenge Mode is designed for technical interviews and coding practice. It analyzes screenshots of coding problems and provides complete, working solutions.

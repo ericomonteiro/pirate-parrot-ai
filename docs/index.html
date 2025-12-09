@@ -82,6 +82,12 @@
     }
     
     /* Cover page customization */
+    section.cover {
+      background: linear-gradient(135deg, #0D1B2A 0%, #1B3A4B 50%, #0D1B2A 100%) !important;
+    }
+    section.cover.show {
+      height: 100vh;
+    }
     .cover-main {
       text-align: center;
     }
@@ -97,19 +103,50 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+    .cover p, .cover li {
+      color: #E0E0E0 !important;
+    }
     .cover blockquote {
-      font-size: 1.2rem;
-      color: #B0B0B0;
+      font-size: 1.3rem;
+      color: #FFFFFF !important;
+      font-weight: 500;
+    }
+    .cover blockquote p {
+      color: #FFFFFF !important;
+    }
+    .cover ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+    }
+    .cover ul li {
+      color: #E0E0E0 !important;
+      font-size: 1.1rem;
+      margin: 8px 0;
     }
     .cover .buttons a {
       border-radius: 25px;
       padding: 12px 40px;
       font-weight: 600;
       transition: all 0.3s ease;
+      margin: 5px;
+    }
+    .cover .buttons a:first-child {
+      background: #00BFA6 !important;
+      color: #0D1B2A !important;
+      border: none;
+    }
+    .cover .buttons a:last-child {
+      background: transparent !important;
+      color: #FFB74D !important;
+      border: 2px solid #FFB74D !important;
     }
     .cover .buttons a:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(0, 191, 166, 0.4);
+    }
+    .cover .badge {
+      color: #0D1B2A !important;
     }
     
     /* Mermaid diagrams */

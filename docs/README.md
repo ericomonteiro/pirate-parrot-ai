@@ -6,6 +6,8 @@
 
 Pirate-Parrot is a cross-platform desktop application that captures your screen, analyzes content using Google's Gemini AI, and provides intelligent solutions and answers in real-time.
 
+![Home Screen](assets/home-screen.png)
+
 **Key Highlights:**
 
 - 🖥️ **Code Challenge Mode** - Get complete solutions for coding problems

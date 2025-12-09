@@ -2,6 +2,8 @@
 
 Pirate-Parrot offers three main analysis modes, plus powerful utility features.
 
+![Features Overview](../assets/home-screen.png)
+
 ## Analysis Modes
 
 ```mermaid

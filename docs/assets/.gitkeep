@@ -1,0 +1,14 @@
+# Screenshots Directory
+
+Place application screenshots here:
+
+- home-screen.png - Home screen
+- code-challenge.png - Code challenge mode
+- certification.png - Certification mode  
+- settings.png - Settings screen
+- stealth-indicator.png - Stealth mode indicator
+
+To capture screenshots:
+1. Run the app: ./gradlew :composeApp:run
+2. Disable stealth mode (Cmd+Shift+Opt+B)
+3. Use macOS screenshot: Cmd+Shift+4, then Space, then click the window

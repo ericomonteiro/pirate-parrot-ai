@@ -10,7 +10,11 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        mainRun {
+            mainClass.set("com.github.ericomonteiro.pirateparrotai.MainKt")
+        }
+    }
     
     jvmToolchain(21)
 
@@ -75,14 +79,6 @@ sqldelight {
     }
 }
 
-
-kotlin {
-    jvm {
-        mainRun {
-            mainClass.set("com.github.ericomonteiro.pirateparrotai.MainKt")
-        }
-    }
-}
 
 compose.desktop {
     application {

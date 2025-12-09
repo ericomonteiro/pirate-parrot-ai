@@ -2,6 +2,8 @@
 
 Support for Brazilian exams and general assessments with AI-powered analysis.
 
+![Generic Exam Mode](../assets/generic-exam.png)
+
 ## Overview
 
 Generic Exam Mode is designed for a variety of standardized tests, particularly Brazilian exams. It provides detailed answers with subject identification and study tips.
