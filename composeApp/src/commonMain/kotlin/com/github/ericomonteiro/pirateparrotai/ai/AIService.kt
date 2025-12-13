@@ -489,7 +489,7 @@ object HttpClientFactory {
                 })
             }
             install(io.ktor.client.plugins.HttpTimeout) {
-                requestTimeoutMillis = 60000
+                requestTimeoutMillis = 120000
             }
         }
     }
