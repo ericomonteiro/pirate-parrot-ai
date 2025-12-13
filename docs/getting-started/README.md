@@ -26,9 +26,9 @@ flowchart LR
 
 ## Steps
 
-1. **[Installation](installation.md)** - Download or build the application
-2. **[Configuration](configuration.md)** - Set up your API key and preferences
-3. **[Quick Start](quickstart.md)** - Learn the basics and start capturing
+1. **[Installation](/getting-started/installation.md)** - Download or build the application
+2. **[Configuration](/getting-started/configuration.md)** - Set up your API key and preferences
+3. **[Quick Start](/getting-started/quickstart.md)** - Learn the basics and start capturing
 
 ## Estimated Time
 

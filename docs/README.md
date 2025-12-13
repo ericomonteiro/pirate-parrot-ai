@@ -25,7 +25,7 @@ cd pirate-parrot-ai
 ./gradlew :composeApp:run
 ```
 
-Then configure your [Gemini API Key](getting-started/configuration.md) in Settings.
+Then configure your [Gemini API Key](/getting-started/configuration.md) in Settings.
 
 ## Architecture Overview
 
@@ -89,8 +89,8 @@ graph TB
 
 ## Documentation Sections
 
-- **[Getting Started](getting-started/)** - Installation, configuration, and first steps
-- **[Features](features/)** - Detailed feature documentation
-- **[Architecture](architecture/)** - Technical architecture and design
-- **[API Reference](api/)** - API documentation and integration
-- **[Contributing](contributing.md)** - How to contribute to the project
+- **[Getting Started](/getting-started/)** - Installation, configuration, and first steps
+- **[Features](/features/)** - Detailed feature documentation
+- **[Architecture](/architecture/)** - Technical architecture and design
+- **[API Reference](/api/)** - API documentation and integration
+- **[Contributing](/contributing.md)** - How to contribute to the project

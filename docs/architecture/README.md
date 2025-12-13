@@ -173,6 +173,6 @@ graph TD
 
 ## Further Reading
 
-- [Project Structure](project-structure.md) - Detailed file organization
-- [Data Flow](data-flow.md) - How data moves through the app
-- [AI Integration](ai-integration.md) - Gemini API integration details
+- [Project Structure](/architecture/project-structure.md) - Detailed file organization
+- [Data Flow](/architecture/data-flow.md) - How data moves through the app
+- [AI Integration](/architecture/ai-integration.md) - Gemini API integration details

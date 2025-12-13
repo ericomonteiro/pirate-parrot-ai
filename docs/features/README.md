@@ -29,7 +29,7 @@ graph LR
     style C fill:#B388FF,color:#0D1B2A
 ```
 
-### [💻 Code Challenge Mode](code-challenge.md)
+### [💻 Code Challenge Mode](/features/code-challenge.md)
 
 Solve coding problems from platforms like LeetCode, HackerRank, and CodeSignal.
 
@@ -39,7 +39,7 @@ Solve coding problems from platforms like LeetCode, HackerRank, and CodeSignal.
 - Step-by-step explanations
 - Syntax-highlighted code editor
 
-### [📜 Certification Mode](certification.md)
+### [📜 Certification Mode](/features/certification.md)
 
 Prepare for AWS certification exams with AI-powered assistance.
 
@@ -50,7 +50,7 @@ Prepare for AWS certification exams with AI-powered assistance.
 - AWS SysOps Administrator
 - AWS DevOps Engineer Professional
 
-### [📝 Generic Exam Mode](generic-exam.md)
+### [📝 Generic Exam Mode](/features/generic-exam.md)
 
 Support for Brazilian exams and general assessments.
 
@@ -65,7 +65,7 @@ Support for Brazilian exams and general assessments.
 
 ## Utility Features
 
-### [📐 Capture Region](capture-region.md)
+### [📐 Capture Region](/features/capture-region.md)
 
 Define a specific screen area to capture instead of the entire screen.
 
@@ -85,7 +85,7 @@ flowchart LR
 - Avoid capturing sensitive information
 - Works with all analysis modes
 
-### [🔒 Stealth Mode](stealth-mode.md)
+### [🔒 Stealth Mode](/features/stealth-mode.md)
 
 Hide the application from screen capture and recording software.
 
@@ -99,7 +99,7 @@ flowchart LR
     style A fill:#00BFA6,color:#0D1B2A
 ```
 
-### [⌨️ Global Hotkeys](hotkeys.md)
+### [⌨️ Global Hotkeys](/features/hotkeys.md)
 
 Control the app from anywhere with keyboard shortcuts.
 

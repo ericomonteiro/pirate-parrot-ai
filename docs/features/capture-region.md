@@ -193,8 +193,8 @@ For complex layouts or when content position varies, disable the region to captu
 
 The capture region works seamlessly with:
 
-- **[Code Challenge Mode](code-challenge.md)**: Capture just the problem statement
-- **[Certification Mode](certification.md)**: Focus on the question and answers
-- **[Generic Exam Mode](generic-exam.md)**: Capture specific exam questions
-- **[Global Hotkeys](hotkeys.md)**: Hotkey capture uses the configured region
-- **[Stealth Mode](stealth-mode.md)**: Region capture respects stealth settings
+- **[Code Challenge Mode](/features/code-challenge.md)**: Capture just the problem statement
+- **[Certification Mode](/features/certification.md)**: Focus on the question and answers
+- **[Generic Exam Mode](/features/generic-exam.md)**: Capture specific exam questions
+- **[Global Hotkeys](/features/hotkeys.md)**: Hotkey capture uses the configured region
+- **[Stealth Mode](/features/stealth-mode.md)**: Region capture respects stealth settings

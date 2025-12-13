@@ -142,4 +142,4 @@ After installation, launch Pirate-Parrot and verify:
 2. ✅ Home screen loads with 🦜 logo
 3. ✅ Settings icon is clickable
 
-If everything works, proceed to [Configuration](configuration.md).
+If everything works, proceed to [Configuration](/getting-started/configuration.md).

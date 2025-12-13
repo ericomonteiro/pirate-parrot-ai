@@ -141,6 +141,6 @@ flowchart TD
 
 ## Next Steps
 
-- Learn about [Code Challenge Mode](../features/code-challenge.md)
-- Explore [Certification Mode](../features/certification.md)
-- Understand the [Architecture](../architecture/)
+- Learn about [Code Challenge Mode](/features/code-challenge.md)
+- Explore [Certification Mode](/features/certification.md)
+- Understand the [Architecture](/architecture/)

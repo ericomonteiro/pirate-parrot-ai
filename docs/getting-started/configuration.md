@@ -112,4 +112,4 @@ erDiagram
 - [ ] Stealth mode preference set
 - [ ] Permissions granted (macOS)
 
-Once configured, proceed to [Quick Start](quickstart.md) to learn how to use the app!
+Once configured, proceed to [Quick Start](/getting-started/quickstart.md) to learn how to use the app!
