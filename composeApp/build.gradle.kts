@@ -84,12 +84,27 @@ compose.desktop {
     application {
         mainClass = "com.github.ericomonteiro.pirateparrotai.MainKt"
 
+        buildTypes.release.proguard {
+            isEnabled.set(true)
+            configurationFiles.from(project.file("proguard-rules.pro"))
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "pirate-parrot"
             packageVersion = "1.0.0"
             
-            modules("java.sql")
+            // Minimize JVM size by including only required modules
+            includeAllModules = false
+            modules(
+                "java.sql",
+                "java.naming",
+                "jdk.unsupported",
+                "java.instrument",
+                "java.management",
+                "java.net.http",
+                "jdk.crypto.ec"
+            )
             
             // App icons
             windows {
