@@ -155,7 +155,7 @@ fun HomeScreen(
             SectionCard(
                 icon = Icons.Outlined.PlayArrow,
                 title = strings.homeHowToUseTitle,
-                content = strings.homeHowToUseContent
+                content = strings.homeHowToUseContent()
             )
             
             Spacer(modifier = Modifier.height(24.dp))

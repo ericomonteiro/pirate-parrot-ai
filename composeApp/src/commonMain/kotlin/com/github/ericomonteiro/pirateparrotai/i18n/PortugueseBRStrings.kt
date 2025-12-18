@@ -48,23 +48,23 @@ object PortugueseBRStrings : StringResources {
     """.trimIndent()
     override val homeOpenSettings = "Abrir Configurações"
     override val homeHowToUseTitle = "Como Usar"
-    override val homeHowToUseContent = """
+    override val homeHowToUseContentTemplate = """
         O app tem dois modos principais:
         
         Desafios de Código
         • Navegue até um problema de código (LeetCode, HackerRank, etc.)
-        • Pressione Cmd+Shift+Opt+S ou clique em "Capturar"
+        • Pressione {captureShortcut} ou clique em "Capturar"
         • A IA irá analisar e fornecer uma solução
         
         Certificação AWS
         • Abra sua questão do exame de certificação
         • Selecione o tipo de certificação
-        • Pressione Cmd+Shift+Opt+S ou clique em "Capturar"
+        • Pressione {captureShortcut} ou clique em "Capturar"
         • Obtenha a resposta correta com explicações
         
         Atalhos de Teclado
-        • Cmd+Shift+Opt+S -> Capturar & Analisar
-        • Cmd+Shift+Opt+B -> Alternar Modo Stealth
+        • {captureShortcut} -> Capturar & Analisar
+        • {stealthShortcut} -> Alternar Modo Stealth
         
         Dicas
         • Certifique-se de que a questão está totalmente visível
@@ -99,10 +99,10 @@ object PortugueseBRStrings : StringResources {
     override val settingsScreenshotHistory = "Histórico de Capturas"
     override val settingsScreenshotHistoryDesc = "Visualize capturas de tela e resultados de análise para depuração"
     override val settingsTestApiConnection = "Testar Conexão da API"
-    override val settingsTipsContent = """
+    override val settingsTipsContentTemplate = """
         Atalhos Globais (funcionam mesmo quando o app não está em foco):
-        • Cmd+Shift+Opt+S - Capturar tela & analisar
-        • Cmd+Shift+Opt+B - Alternar modo stealth
+        • {captureShortcut} - Capturar tela & analisar
+        • {stealthShortcut} - Alternar modo stealth
 
         • O código da solução é copiado automaticamente!
         • Gemini é completamente GRATUITO (não precisa de cartão de crédito)
@@ -115,7 +115,7 @@ object PortugueseBRStrings : StringResources {
     override val screenshotCapture = "Capturar"
     override val screenshotAnalyzing = "Analisando..."
     override val screenshotNoImage = "Nenhuma imagem capturada"
-    override val screenshotCaptureHint = "Pressione Cmd+Shift+Opt+S ou clique em Capturar"
+    override val screenshotCaptureHintTemplate = "Pressione {captureShortcut} ou clique em Capturar"
     override val screenshotSolution = "Solução"
     override val screenshotCopied = "Copiado!"
     override val screenshotCopyCode = "Copiar Código"

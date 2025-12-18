@@ -1,5 +1,9 @@
 package com.github.ericomonteiro.pirateparrotai.i18n
 
+import com.github.ericomonteiro.pirateparrotai.platform.formatShortcut
+import com.github.ericomonteiro.pirateparrotai.platform.getModifierKey
+import com.github.ericomonteiro.pirateparrotai.platform.getOptionKey
+
 interface StringResources {
     // App General
     val appName: String
@@ -20,7 +24,15 @@ interface StringResources {
     val homeConfigContent: String
     val homeOpenSettings: String
     val homeHowToUseTitle: String
-    val homeHowToUseContent: String
+    val homeHowToUseContentTemplate: String
+    
+    fun homeHowToUseContent(): String {
+        val captureShortcut = formatShortcut("S")
+        val stealthShortcut = formatShortcut("B")
+        return homeHowToUseContentTemplate
+            .replace("{captureShortcut}", captureShortcut)
+            .replace("{stealthShortcut}", stealthShortcut)
+    }
     val homeGetStarted: String
     val homeCodeChallenge: String
     val homeCodeChallengeDesc: String
@@ -50,7 +62,15 @@ interface StringResources {
     val settingsScreenshotHistory: String
     val settingsScreenshotHistoryDesc: String
     val settingsTestApiConnection: String
-    val settingsTipsContent: String
+    val settingsTipsContentTemplate: String
+    
+    fun settingsTipsContent(): String {
+        val captureShortcut = formatShortcut("S")
+        val stealthShortcut = formatShortcut("B")
+        return settingsTipsContentTemplate
+            .replace("{captureShortcut}", captureShortcut)
+            .replace("{stealthShortcut}", stealthShortcut)
+    }
     val settingsAppLanguage: String
     val settingsAppLanguageHint: String
     val settingsSystemDefault: String
@@ -59,7 +79,12 @@ interface StringResources {
     val screenshotCapture: String
     val screenshotAnalyzing: String
     val screenshotNoImage: String
-    val screenshotCaptureHint: String
+    val screenshotCaptureHintTemplate: String
+    
+    fun screenshotCaptureHint(): String {
+        val captureShortcut = formatShortcut("S")
+        return screenshotCaptureHintTemplate.replace("{captureShortcut}", captureShortcut)
+    }
     val screenshotSolution: String
     val screenshotCopied: String
     val screenshotCopyCode: String

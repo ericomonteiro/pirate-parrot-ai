@@ -48,23 +48,23 @@ object EnglishStrings : StringResources {
     """.trimIndent()
     override val homeOpenSettings = "Open Settings"
     override val homeHowToUseTitle = "How to Use"
-    override val homeHowToUseContent = """
+    override val homeHowToUseContentTemplate = """
         The app has two main modes:
         
         Code Challenges
         • Navigate to a coding problem (LeetCode, HackerRank, etc.)
-        • Press Cmd+Shift+Opt+S or click "Capture"
+        • Press {captureShortcut} or click "Capture"
         • The AI will analyze and provide a solution
         
         AWS Certification
         • Open your certification exam question
         • Select the certification type
-        • Press Cmd+Shift+Opt+S or click "Capture"
+        • Press {captureShortcut} or click "Capture"
         • Get the correct answer with explanations
         
         Keyboard Shortcuts
-        • Cmd+Shift+Opt+S -> Capture & Analyze
-        • Cmd+Shift+Opt+B -> Toggle Stealth Mode
+        • {captureShortcut} -> Capture & Analyze
+        • {stealthShortcut} -> Toggle Stealth Mode
         
         Tips
         • Make sure the question is fully visible
@@ -99,10 +99,10 @@ object EnglishStrings : StringResources {
     override val settingsScreenshotHistory = "Screenshot History"
     override val settingsScreenshotHistoryDesc = "View captured screenshots and analysis results for debugging"
     override val settingsTestApiConnection = "Test API Connection"
-    override val settingsTipsContent = """
+    override val settingsTipsContentTemplate = """
         Global Hotkeys (work even when app is not focused):
-        • Cmd+Shift+Opt+S - Capture screenshot & analyze
-        • Cmd+Shift+Opt+B - Toggle stealth mode
+        • {captureShortcut} - Capture screenshot & analyze
+        • {stealthShortcut} - Toggle stealth mode
 
         • Solution code is auto-copied to clipboard!
         • Gemini is completely FREE (no credit card needed)
@@ -115,7 +115,7 @@ object EnglishStrings : StringResources {
     override val screenshotCapture = "Capture"
     override val screenshotAnalyzing = "Analyzing..."
     override val screenshotNoImage = "No image captured"
-    override val screenshotCaptureHint = "Press Cmd+Shift+Opt+S or click Capture"
+    override val screenshotCaptureHintTemplate = "Press {captureShortcut} or click Capture"
     override val screenshotSolution = "Solution"
     override val screenshotCopied = "Copied!"
     override val screenshotCopyCode = "Copy Code"

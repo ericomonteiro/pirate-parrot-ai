@@ -466,7 +466,7 @@ fun SettingsScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    strings.settingsTipsContent,
+                    strings.settingsTipsContent(),
                     style = MaterialTheme.typography.bodySmall
                 )
             }
