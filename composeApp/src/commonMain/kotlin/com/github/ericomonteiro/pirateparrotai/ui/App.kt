@@ -45,10 +45,12 @@ fun App(
         }
     }
     
-    ProvideStrings(language = settingsState.appLanguage) {
-        MaterialTheme(
-            colorScheme = PirateParrotDarkColorScheme
-        ) {
+    // Use key to force full recomposition when language changes
+    key(settingsState.appLanguage) {
+        ProvideStrings(language = settingsState.appLanguage) {
+            MaterialTheme(
+                colorScheme = PirateParrotDarkColorScheme
+            ) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
@@ -117,7 +119,6 @@ fun App(
                     )
                 }
                 Screen.SETTINGS -> {
-                    val settingsViewModel: SettingsViewModel = koinInject()
                     SettingsScreen(
                         onCloseClick = {
                             currentScreen = Screen.HOME
@@ -147,6 +148,7 @@ fun App(
                     )
                 }
             }
+        }
         }
     }
 }

@@ -2,18 +2,18 @@ package com.github.ericomonteiro.pirateparrotai.i18n
 
 import androidx.compose.runtime.*
 
-private val LocalStrings = staticCompositionLocalOf<StringResources> { EnglishStrings }
+private val LocalStrings = compositionLocalOf<StringResources> { EnglishStrings }
 
 object LocalizedStrings {
     val current: StringResources
         @Composable
-        @ReadOnlyComposable
         get() = LocalStrings.current
     
     fun getStrings(language: AppLanguage): StringResources {
         return when (language) {
             AppLanguage.ENGLISH -> EnglishStrings
             AppLanguage.PORTUGUESE_BR -> PortugueseBRStrings
+            AppLanguage.SPANISH -> SpanishStrings
         }
     }
 }

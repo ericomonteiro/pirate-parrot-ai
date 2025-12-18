@@ -8,7 +8,8 @@ enum class AppLanguage(
     val nativeName: String
 ) {
     ENGLISH("en", "English", "English"),
-    PORTUGUESE_BR("pt-BR", "Portuguese (Brazil)", "Português (Brasil)");
+    PORTUGUESE_BR("pt-BR", "Portuguese (Brazil)", "Português (Brasil)"),
+    SPANISH("es", "Spanish", "Español");
     
     companion object {
         fun fromCode(code: String): AppLanguage {
@@ -23,6 +24,7 @@ enum class AppLanguage(
             return when {
                 language == "pt" && country == "BR" -> PORTUGUESE_BR
                 language == "pt" -> PORTUGUESE_BR
+                language == "es" -> SPANISH
                 else -> ENGLISH
             }
         }
